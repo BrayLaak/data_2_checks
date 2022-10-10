@@ -31,8 +31,8 @@ while True:
         print("Sorry, I didn't understand that.")
         continue
 
-    if num_activities < 0:
-        print("Sorry, your response must not be negative.")
+    if num_activities < 5:
+        print("Sorry, I want more options.")
         continue
     
     elif num_activities > 20:
@@ -47,7 +47,18 @@ for activity in range(num_activities):
     
     r = rq.get(bored_api_url)
     activity_dict = r.json()
-    activity_df = pd.json_normalize(bored_dict)
-    bored_df = pd.concat(activity_df, ignore_index = True)
+    print(activity_dict)
+    activity_df = pd.json_normalize(activity_dict)
 
-print(bored_df.head())
+    bored_df = bored_df.append(activity_df, ignore_index=True)
+
+
+bored_df.describe()
+
+print(bored_df.loc[bored_df['type'] == 'social'])
+
+print(bored_df[['activity','type']].head())
+
+print(bored_df.iloc[:, 1:3])
+
+print(bored_df.iloc[0:4])
